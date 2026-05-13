@@ -1,4 +1,4 @@
-setwd("C:/Users/hvanling/OneDrive - University of Guelph/Documents/CourseInBayesian/R_code_lecture04")
+setwd("...")
 
 worm_Zn_dat <- read.table("Efetida_Zn.txt", header=T, sep=",") # Read dataset
 print(head(worm_Zn_dat)) # print head of dataset
