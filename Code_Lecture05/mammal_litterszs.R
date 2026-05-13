@@ -1,5 +1,5 @@
 
-setwd("C:/Users/hvanling/OneDrive - University of Guelph/Documents/CourseInBayesian/R_code_lecture05")
+setwd("...")
 
 library(rstan)
 #library(gridExtra)
