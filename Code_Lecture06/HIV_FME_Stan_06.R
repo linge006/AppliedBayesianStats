@@ -191,8 +191,8 @@ HIV_model_mv <- stan_model(model_code=HIV_normal_mv, model_name="HIV_normal_mv")
 ### Run model with informative prior ...
 fit_HIV_mv_inf <- sampling(HIV_model_mv,
                        data=data_HIV_inf,
-                       iter=10e3, warmup=1e3, thin=15, # 12, 6, 2
-                       chains=4)
+                       iter=1e3, warmup=5e2, thin=10, # 12, 6, 2
+                       chains=1)
 
 Post_mv_STAN_inf <- summary(fit_HIV_mv_inf, pars=c("theta","sigma_e","pred_y","lp__"))$summary
 print(Post_mv_STAN_inf)
@@ -277,7 +277,7 @@ dev.off()
 
 fit_HIV_mv_wkinf <- sampling(HIV_model_mv,
                            data=data_HIV_wkinf,
-                           iter=2e3, warmup=1e3, thin=15, # 12, 6, 2
+                           iter=1e3, warmup=5e2, thin=10, # 12, 6, 2
                            chains=1)
 
 Post_mv_STAN_wkinf <- summary(fit_HIV_mv_wkinf, pars=c("theta","sigma_e","pred_y"))$summary
