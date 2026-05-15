@@ -6,7 +6,7 @@
 # arXiv
 # https://arxiv.org/pdf/2006.02985.pdf
 
-setwd("C:/Users/hvanling/OneDrive - University of Guelph/Documents/CourseInBayesian/R_code_lecture06")
+setwd("...")
 library(deSolve) # load deSolve package for solving ODEs
 
 
