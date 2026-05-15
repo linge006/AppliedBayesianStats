@@ -115,13 +115,13 @@ transformed data {
 parameters{
   real<lower=0> beta;
   real<lower=0> gamma;
-  real<lower=0> delta_inv;
+  real<lower=0> theta_inv;
 } // End parameters block
 
 
 transformed parameters{
   real y[n_days, 3];
-  real delta = .1 / delta_inv;
+  real theta = .1 / theta_inv;
   {
     real theta[2];
     theta[1] = beta;
@@ -136,11 +136,11 @@ model {
   // priors
   beta ~ distribution(1, 1); // truncated at 0
   gamma ~ distribution(1, 1); // truncated at 0
-  delta_inv ~ distribution(1);
+  theta_inv ~ distribution(1);
   
   // Likelihood/sampling distribution
   // col(matrix x, int n)
-  cases ~ distribution(col(to_matrix(y), 2), delta);
+  cases ~ distribution(col(to_matrix(y), 2), theta);
 } // End model block
 
 
@@ -148,7 +148,7 @@ generated quantities {
   real R0 = beta/gamma;
   real recovery_time = 1/gamma;
   real pred_cases[n_days];
-  pred_cases = distribution_rng(col(to_matrix(y), 2) + 1e-5, delta);
+  pred_cases = distribution_rng(col(to_matrix(y), 2) + 1e-5, theta);
 } // End generated quantities
 
 "
@@ -188,16 +188,16 @@ fit_SIR_distribution <- sampling(SIR_model,
                            data = data_SIR,
                            warmup = 1e3, iter = 2e3,
                            chains = 2)
-ODE_out_rs <- summary(fit_SIR_distribution, pars=c("beta","gamma","delta_inv","delta","R0","recovery_time","pred_cases","lp__"))$summary
+ODE_out_rs <- summary(fit_SIR_distribution, pars=c("beta","gamma","theta_inv","theta","R0","recovery_time","pred_cases","lp__"))$summary
 
 write.table(summary(fit_SIR_distribution)$summary, "SIR_ODE.csv", sep=",")
 pdf("SIR_ODE_chns.pdf", width=11, height=8.5)
-traceplot(fit_SIR_distribution, pars=c("beta","gamma","delta_inv","delta","R0","recovery_time","pred_cases","lp__"))
+traceplot(fit_SIR_distribution, pars=c("beta","gamma","theta_inv","theta","R0","recovery_time","pred_cases","lp__"))
 dev.off()
 
 #
 
-pairs(fit_SIR_distribution, pars=c("beta","gamma","delta_inv","delta","R0","recovery_time"))
+pairs(fit_SIR_distribution, pars=c("beta","gamma","theta_inv","theta","R0","recovery_time"))
 
 
 ### Plot posterior predictive distribution
